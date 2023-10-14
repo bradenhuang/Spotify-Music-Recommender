@@ -9,15 +9,13 @@ from urllib.parse import urlencode
 client_id = secrets['client_id']
 client_secret = secrets['client_secret']
 
+def get_auth_code():
 
-credentials = f"{client_id}:{client_secret}"
-creds_b64 = base64.b64encode(credentials.encode())
+    auth_headers = {
+        "client_id": client_id,
+        "response_type": "code",
+        "redirect_uri": "http://localhost:7777/callback",
+        "scope": "user-library-read playlist-read-private"
+        }
 
-auth_headers = {
-    "client_id": client_id,
-    "response_type": "code",
-    "redirect_uri": "http://localhost:7777/callback",
-    "scope": "user-library-read"
-    }
-
-webbrowser.open("https://accounts.spotify.com/authorize?" + urlencode(auth_headers))
+    webbrowser.open("https://accounts.spotify.com/authorize?" + urlencode(auth_headers))
