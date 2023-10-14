@@ -5,10 +5,11 @@ import json
 import webbrowser
 from secret import secrets
 from urllib.parse import urlencode
-from getcode.py import get_auth_code
-from gettoken.py import get_token
-from getliked.py import get_liked
-from songfeatures.py import get_song_features
+from getcode import get_auth_code
+from gettoken import get_token
+from getliked import get_liked
+from songfeatures import get_song_features
+from playlistoperations import *
 
 
 client_id = secrets['client_id']
@@ -26,14 +27,17 @@ def get_userid(token):
     response = r.json()
     id = response['id']
     print(response)
-    
+
 
 def main():
     get_auth_code()
     code = str(input("Enter the code from the URL of the webpage: "))
     token = get_token(code)
-    songs = get_liked(token)
-    get_song_features(songs, token)
+    #songs = get_liked(token)
+    #get_song_features(songs, token)
+    playlists = get_playlists(token)
+    pchoice = playlist_select(playlists)
+    
 
 if __name__ == "__main__":
     main()

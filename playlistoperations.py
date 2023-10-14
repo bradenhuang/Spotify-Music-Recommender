@@ -1,7 +1,9 @@
+import requests
+    
 def get_playlists(token):
     playlists = []
     url = "https://api.spotify.com/v1/me/playlists"
-    header = auth_header(token)
+    header = {"Authorization" : "Bearer " + token}
     r = requests.get(url, headers=header)
     json_playlists = r.json()
     items = json_playlists.get('items', [])
@@ -15,7 +17,15 @@ def get_playlists(token):
             })
     
     return playlists
-    
+
+def playlist_select(playlists):
+    if len(playlists) > 0:
+        for index, playlist in enumerate(playlists, start=1):
+            print(f"{index}. {playlist['name']}")
+        print(f"{len(playlists)+1}. Import all")
+        choice = input("Please enter the number of the playlist you wish to select: ")
+        return choice 
+'''          
 def get_playlist_songs(playlists, token):
     for pl in playlists:
         playlist_tracks = []  
@@ -51,3 +61,4 @@ def get_playlist_songs(playlists, token):
             break
 
     return playlists
+'''

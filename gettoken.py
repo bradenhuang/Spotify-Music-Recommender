@@ -5,7 +5,7 @@ import json
 import webbrowser
 from secret import secrets
 from urllib.parse import urlencode
-from getcode.py import get_auth_code
+from getcode import get_auth_code
 
 
 client_id = secrets['client_id']
