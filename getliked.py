@@ -1,7 +1,6 @@
 import requests
 
-def get_liked(token):
-    songs = []
+def get_liked(token, songs):
     url = "https://api.spotify.com/v1/me/tracks?limit=50"
     headers = {"Authorization" : "Bearer " + token}
     
@@ -30,4 +29,5 @@ def get_liked(token):
             url = results['tracks']['next']
         else:
             break
+    print (len(songs))
     return songs

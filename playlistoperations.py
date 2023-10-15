@@ -1,7 +1,6 @@
 import requests
     
-def get_playlists(token):
-    playlists = []
+def get_playlists(token, playlists):
     url = "https://api.spotify.com/v1/me/playlists"
     header = {"Authorization" : "Bearer " + token}
     r = requests.get(url, headers=header)
@@ -25,40 +24,36 @@ def playlist_select(playlists):
         print(f"{len(playlists)+1}. Import all")
         choice = input("Please enter the number of the playlist you wish to select: ")
         return choice 
-'''          
-def get_playlist_songs(playlists, token):
+             
+def get_playlist_songs_all(playlists, token, songs):
     for pl in playlists:
-        playlist_tracks = []  
         url = f"{pl['uri']}?limit=50"
-        header = auth_header(token)
+        header = {"Authorization" : "Bearer " + token}
         
-        
-        r = requests.get(url, headers=header)
-        results = r.json()
-        extract = results['items']
-        
-        for i in extract:
-            if i is not None:
-                track = i['track']
-                artist_name = track['artists'][0]['name'] if track['artists'] else 'Unknown Artist'
-                playlist_tracks.append({  
-                    'Song_Name': track['name'],
-                    'Album' : track['album']['name'],
-                    "Artist" : artist_name,
-                    "Cover" : track['album']['images'][0]['url'] if 'images' in track['album'] and track['album']['images'] else 'No Image',
-                    'Link' : track['external_urls']['spotify'],
-                    'id' : track['id'],
-                    'Preview Link' : track['preview_url']
-                })
+        while True:
+            r = requests.get(url, headers=header)
+            results = r.json()
+            extract = results['items']  
 
-        pl['tracks'] = playlist_tracks
-
-        if results.get('next', None) is not None:
-            url = results['next']
-        elif results.get('tracks', None) is not None:
-            url = results['tracks']['next']
-        else:
-            break
-
-    return playlists
-'''
+            for i in extract:
+                if (i is not None):
+                    track = i['track']
+                    artist_name = track['artists'][0]['name'] if track['artists'] else 'Unknown Artist'
+                    songs.append({
+                        'Song_Name': track['name'],
+                        'Album' : track['album']['name'],
+                        "Artist" : artist_name,
+                        "Cover" : track['album']['images'][0]['url'] if 'images' in track['album'] and track['album']['images'] else 'No Image',
+                        'Link' : track['external_urls']['spotify'],
+                        'id' : track['id'],
+                        'Preview Link' : track['preview_url']
+                    })
+                
+            if (results.get('next',None) is not None):
+                url = results['next']
+            elif (results.get('tracks',None) is not None):
+                url = results['tracks']['next']
+            else:
+                break
+        print (len(songs))
+        return songs

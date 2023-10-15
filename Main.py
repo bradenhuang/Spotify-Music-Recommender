@@ -30,14 +30,24 @@ def get_userid(token):
 
 
 def main():
+    songs = []
+    playlists = []
     get_auth_code()
     code = str(input("Enter the code from the URL of the webpage: "))
     token = get_token(code)
-    #songs = get_liked(token)
+    #songs = get_liked(token,songs)
     #get_song_features(songs, token)
-    playlists = get_playlists(token)
-    pchoice = playlist_select(playlists)
+    #playlists = get_playlists(token, playlists)
+    #pchoice = playlist_select(playlists)
+    #get_playlist_songs_all(playlists,token,songs)
+
     
+    """with open("output.txt", "w") as file:
+        for song in songs:
+            song_json = json.dumps(song, ensure_ascii=False)  # Convert the dictionary to a JSON string
+            file.write(song_json + "\n")  # Write the JSON string to the file
+        print('all songs added to file')"""
+
 
 if __name__ == "__main__":
     main()
