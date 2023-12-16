@@ -36,19 +36,21 @@ def get_playlist_songs_all(playlists, token, songs):
             extract = results['items']  
 
             for i in extract:
-                if (i is not None):
-                    track = i['track']
-                    artist_name = track['artists'][0]['name'] if track['artists'] else 'Unknown Artist'
-                    songs.append({
-                        'Song_Name': track['name'],
-                        'Album' : track['album']['name'],
-                        "Artist" : artist_name,
-                        "Cover" : track['album']['images'][0]['url'] if 'images' in track['album'] and track['album']['images'] else 'No Image',
-                        'Link' : track['external_urls']['spotify'],
-                        'id' : track['id'],
-                        'Preview Link' : track['preview_url']
-                    })
-                
+                if i:
+                    track = i.get('track')
+                    if track:
+                        artist_name = track['artists'][0]['name'] if track.get('artists') else 'Unknown Artist'
+                        external_urls = track.get('external_urls', {})
+                        spotify_link = external_urls.get('spotify', 'No Link')
+                        songs.append({
+                            'Song_Name': track['name'],
+                            'Album': track['album']['name'],
+                            "Artist": artist_name,
+                            "Cover": track['album']['images'][0]['url'] if 'images' in track['album'] and track['album']['images'] else 'No Image',
+                            'Link' : spotify_link,
+                            'id': track['id'],
+                            'Preview Link': track['preview_url']
+                        }) 
             if (results.get('next',None) is not None):
                 url = results['next']
             elif (results.get('tracks',None) is not None):
