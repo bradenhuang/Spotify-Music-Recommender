@@ -41,6 +41,8 @@ def get_playlist_songs(playlists, token, songs):
                     artist_name = track['artists'][0]['name'] if track.get('artists') else 'Unknown Artist'
                     external_urls = track.get('external_urls', {})
                     spotify_link = external_urls.get('spotify', 'No Link')
+                    if spotify_link == "No Link":
+                        continue
                     songs.append({
                         'Song_Name': track['name'],
                         'Album': track['album']['name'],

@@ -42,29 +42,35 @@ def main():
         if len(playlists) > 0:
             for index, playlist in enumerate(playlists, start=1):
                 print(f"{index+1}. {playlist['name']}")
-        choice = int(input("Please enter number of playlist of choice shown above. Enter 0 to quit. Once you are done adding songs enter 00: "))
+        choice = int(input("Please enter number of playlist of choice shown above. Enter 0 to quit. Once you are done adding songs enter 999: "))
 
         if choice == 1: 
             songs = get_liked(token,songs)
         if choice == 0:
             break
-        else:
+        if choice not in [1, 0, 999]:
             pchoice = playlists[choice - 2]
             songs = get_playlist_songs(pchoice, token, songs)
+        if choice == 999:
+            get_song_features(songs, token)
+
+            """
+            with open("output.txt", "w", encoding='utf-8') as file:
+                for song in songs:
+                    song_json = json.dumps(song, ensure_ascii=False)
+                    file.write(song_json + "\n")
+                print('All unique songs with audio features added to file')
+            break
+            """
+
+
+
              
     #song = get_liked(token,songs)
     #get_song_features(songs, token)
     #print(playlists)
     #pchoice = playlist_select(playlists)
     #get_playlist_songs_all(playlists,token,songs)
-
-    
-    """with open("output.txt", "w") as file:
-        for song in songs:
-            song_json = json.dumps(song, ensure_ascii=False)  # Convert the dictionary to a JSON string
-            file.write(song_json + "\n")  # Write the JSON string to the file
-        print('all songs added to file')"""
-
 
 if __name__ == "__main__":
     main()
