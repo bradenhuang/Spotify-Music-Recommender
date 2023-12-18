@@ -35,9 +35,26 @@ def main():
     get_auth_code()
     code = str(input("Enter the code from the URL of the webpage: "))
     token = get_token(code)
-    #songs = get_liked(token,songs)
+    playlists = get_playlists(token, playlists)
+    
+    while True:
+        print("Select playlist to import songs from: \n1. Liked Songs")
+        if len(playlists) > 0:
+            for index, playlist in enumerate(playlists, start=1):
+                print(f"{index+1}. {playlist['name']}")
+        choice = int(input("Please enter number of playlist of choice shown above. Enter 0 to quit. Once you are done adding songs enter 00: "))
+
+        if choice == 1: 
+            songs = get_liked(token,songs)
+        if choice == 0:
+            break
+        else:
+            pchoice = playlists[choice - 2]
+            songs = get_playlist_songs(pchoice, token, songs)
+             
+    #song = get_liked(token,songs)
     #get_song_features(songs, token)
-    #playlists = get_playlists(token, playlists)
+    #print(playlists)
     #pchoice = playlist_select(playlists)
     #get_playlist_songs_all(playlists,token,songs)
 
